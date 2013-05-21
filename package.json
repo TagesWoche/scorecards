@@ -1,0 +1,8 @@
+{
+  "name" : "tageswoche-scorecards",
+  "version" : "0.0.1",
+  "dependencies" : {
+    "express": "x",
+    "uglify-js": "x"
+  }
+}

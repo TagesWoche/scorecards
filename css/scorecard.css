@@ -1,0 +1,31 @@
+body {
+  font-family: helvetica, sans-serif;
+  font-weight: 100;
+}
+
+.scorecard {
+  width: 320px;
+  background-color: #eee;
+  height: 480px;
+}
+
+
+/* Curve */
+
+
+.curve {
+  width: 320px;
+  overflow: scroll;
+}
+
+.axis path {
+  display: none;
+}
+
+.axis text {
+  font-size: 8px;
+}
+
+.invisible {
+  display: none;
+}
