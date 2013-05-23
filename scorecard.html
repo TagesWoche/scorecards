@@ -11,8 +11,17 @@
   <body>
     <div class="scorecard">
       <div class="profile">
-        <img src="img/stocker.jpg" />
-        <h2>Valentin Stocker</h2>
+        <img id="player-image" />
+        <h2 id="player-name"></h2>
+      </div>
+      <div class="saison-values">
+        <div id="minutes-played">Minuten: <span></span></div>
+        <div id="games-played">Spiele: <span></span></div>
+        <div id="goals">Tore: <span></span></div>
+        <div id="assists">Assists: <span></span></div>
+        <div id="yellow-cards">Gelbe: <span></span></div>
+        <div id="yellow-red-cards">Gelb-Rote: <span></span></div>
+        <div id="red-cards">Rote: <span></span></div>
       </div>
       <div class="curve">
         <h3>Spielerbewertung</h3>
@@ -24,7 +33,9 @@
   <script src="js/scorecard.js"></script>
   <script>
     $(document).ready(function() {
-      tageswoche.scorecard.init('Stocker');
+      player = "Stocker"
+      $("#player-image").attr("src", "img/" + player + ".jpg")
+      tageswoche.scorecard.init(player);
     });
   </script>
 

@@ -43,6 +43,14 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           value = _ref[_i];
           if (value.nickname === this.player) {
+            $('#player-name').html(value.name);
+            $('#minutes-played span').html(value.minutes);
+            $('#games-played span').html(value.played);
+            $('#goals span').html(value.goals);
+            $('#assists span').html(value.assists);
+            $('#yellow-cards span').html(value.yellowCards);
+            $('#yellow-red-cards span').html(value.yellowRedCards);
+            $('#red-cards span').html(value.redCards);
             tageswoche.formcurve.draw(value.grades);
             return;
           }
