@@ -2,12 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width; initial-scale=1;">
     <link rel="stylesheet" href="css/scorecard.css" />
 
     <script src="js/vendor/d3.v3.js"></script>
     <script src="js/vendor/jquery.js"></script>
-    <script src="js/scorecard.js"></script>
-
   </head>
   <body>
     <div class="scorecard">
@@ -16,13 +15,16 @@
         <h2>Valentin Stocker</h2>
       </div>
       <div class="curve">
+        <h3>Spielerbewertung</h3>
       </div>
     </div>
   </body>
 
+  <script src="js/formcurve.js"></script>
+  <script src="js/scorecard.js"></script>
   <script>
     $(document).ready(function() {
-      tageswoche.scorecard.init();
+      tageswoche.scorecard.init('Stocker');
     });
   </script>
 

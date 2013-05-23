@@ -5,17 +5,45 @@ body {
 
 .scorecard {
   width: 320px;
-  background-color: #eee;
-  height: 480px;
 }
 
+/* Tooltip */
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 80px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: #004093;/*lightsteelblue;*/
+  color: #fff;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.focus-svg {
+  position: relative;
+}
 
 /* Curve */
 
+.brush {
+  pointer-events: none;
+}
 
 .curve {
   width: 320px;
-  overflow: scroll;
+  overflow: hidden;
+  position: relative;
+}
+
+.curve-svg circle {
+  stroke: #000;
+}
+
+.curve rect {
+  fill: #004093;
 }
 
 .axis path {
@@ -23,9 +51,16 @@ body {
 }
 
 .axis text {
-  font-size: 8px;
+  font-size: 9px;
 }
 
 .invisible {
   display: none;
+}
+
+.brush .extent {
+  stroke: #CC0000;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+  fill: #CC0000;
 }

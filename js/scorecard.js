@@ -4,24 +4,12 @@
   this.tageswoche = this.tageswoche || {};
 
   tageswoche.scorecard = (function() {
-    var color, height, margin, width, x, y,
-      _this = this;
-    margin = {
-      top: 5,
-      right: 5,
-      bottom: 50,
-      left: 20
-    };
-    width = 1280 - margin.left - margin.right;
-    height = 200 - margin.top - margin.bottom;
-    x = d3.time.scale().range([0, width]);
-    y = d3.scale.linear().range([height, 0]).nice();
-    color = d3.scale.linear().range(["red", "yellow", "green"]);
     return {
       statistics: {},
       filter: {},
       data: {},
-      init: function() {
+      init: function(player) {
+        this.player = player;
         return this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
       },
       loadStatistics: function(filter, callback) {
@@ -50,56 +38,15 @@
         }
       },
       redrawCard: function(data) {
-        this.drawBarchart(data.list[16].grades);
-        return console.log("drawing...");
-      },
-      drawBarchart: function(data) {
-        var index, player, playerData, svg, svg_container, xAxis, yAxis;
-        playerData = [];
-        for (index in data) {
-          player = data[index];
-          playerData.push({
-            date: new Date(player.date),
-            grade: +player.grade
-          });
-        }
-        console.log("in draw function:");
-        console.log(playerData);
-        console.log(typeof playerData);
-        svg_container = d3.select(".curve").append("svg").attr('class', 'barchart').attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
-        svg = svg_container.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        x.domain(d3.extent(playerData, function(d, i) {
-          return d.date;
-        }));
-        y.domain([
-          d3.min(playerData, function(d) {
-            if (d.grade === 0) {
-              return 5;
-            } else {
-              return d.grade;
-            }
-          }), 6
-        ]);
-        color.domain([2, 4, 6]);
-        xAxis = d3.svg.axis().scale(x).orient("bottom");
-        yAxis = d3.svg.axis().scale(y).orient('left').ticks(6);
-        svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')').call(xAxis);
-        svg.append('g').attr('class', 'y axis').call(yAxis);
-        return svg.selectAll('circle').data(playerData).enter().append('circle').attr('cx', function(d) {
-          console.log("x-value: " + d.date);
-          console.log("drawing: " + (x(d.date)));
-          return x(d.date);
-        }).attr('cy', function(d) {
-          console.log("y-value: " + d.grade);
-          console.log("drawing: " + (y(d.grade)));
-          return y(d.grade);
-        }).attr('class', function(d) {
-          if (d.grade === 0) {
-            return 'invisible';
+        var value, _i, _len, _ref;
+        _ref = data.list;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          value = _ref[_i];
+          if (value.nickname === this.player) {
+            tageswoche.formcurve.draw(value.grades);
+            return;
           }
-        }).attr('fill', function(d) {
-          return color(d.grade);
-        }).attr('r', 4).exit().remove();
+        }
       }
     };
   })();
