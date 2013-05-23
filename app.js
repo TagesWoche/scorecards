@@ -2,7 +2,7 @@
 var application_root = __dirname,
     express = require("express"),
     path = require("path"),
-    serverPort = 3000;
+    serverPort = process.env.PORT;
 
 // EXPRESS
 var app = express();
@@ -14,6 +14,11 @@ app.configure(function () {
   // views
   app.use(express.static(path.join(application_root, "/")));
 });
+
+app.configure('development', function() {
+  serverPort = 3000;
+});
+
 
 /* R O U T E S */
 
