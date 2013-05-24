@@ -26,6 +26,12 @@ div.tooltip {
   position: relative;
 }
 
+/* Legend */
+
+.legend text {
+  font-size: 10px;
+}
+
 /* Curve */
 
 .brush {
@@ -42,9 +48,9 @@ div.tooltip {
   stroke: #000;
 }
 
-.curve rect {
+/*.curve rect {
   fill: #004093;
-}
+}*/
 
 .axis path {
   display: none;

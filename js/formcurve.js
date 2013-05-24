@@ -4,21 +4,21 @@
   this.tageswoche = this.tageswoche || {};
 
   tageswoche.formcurve = (function() {
-    var brush, color, context, focus, height, heightContext, margin, marginContext, svg_container, tooltip, width, widthContext, x, xAxis, xAxisContext, xContext, y, yAxis, yContext;
+    var brush, color, context, focus, height, heightContext, legend, margin, marginContext, svg_container, tooltip, width, widthContext, x, xAxis, xAxisContext, xContext, y, yAxis, yContext;
     brush = void 0;
     margin = {
-      top: 10,
+      top: 105,
       right: 5,
-      bottom: 105,
+      bottom: 20,
       left: 25
     };
     width = 320 - margin.left - margin.right;
     height = 380 - margin.top - margin.bottom;
     marginContext = {
-      top: 325,
+      top: 10,
+      bottom: 325,
       right: 5,
-      bottom: 0,
-      left: 5
+      left: 90
     };
     heightContext = 380 - marginContext.top - marginContext.bottom;
     widthContext = 320 - marginContext.left - marginContext.right;
@@ -27,13 +27,18 @@
     y = d3.scale.linear().range([height, 0]);
     yContext = d3.scale.linear().range([heightContext, 0]);
     color = d3.scale.linear().range(['#D7191C', '#D7191C', '#FDAE61', '#FFFFBF', '#A6D96A', '#1A9641']);
-    xAxisContext = d3.svg.axis().scale(xContext).orient('bottom');
+    xAxisContext = d3.svg.axis().scale(xContext).orient('bottom').ticks(6);
     yAxis = d3.svg.axis().scale(y).orient('left').ticks(6);
     xAxis = d3.svg.axis().scale(x).orient('bottom');
     svg_container = d3.select('.curve').append('svg').attr('class', 'curve-svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
     focus = svg_container.append("g").attr('transform', "translate(" + margin.left + "," + margin.top + ")").attr('class', 'focus-svg');
     tooltip = d3.select('.curve').append('div').attr('class', 'tooltip').style('opacity', 0);
     context = svg_container.append('g').attr('transform', "translate(" + marginContext.left + "," + marginContext.top + ")");
+    legend = svg_container.append('g').attr('class', 'legend');
+    legend.append('path').attr('d', "M 5 5 L 5 10 L 70 10 L 70 15 L 80 7.5 L 70 0 L 70 5 L 5 5").attr('fill', '#777').attr('fill-opacity', .7);
+    legend.append('text').text('Zeitauswahl').attr('transform', 'translate(20, 25)');
+    legend.append('path').attr('d', "M 5 5 L 10 5 L 10 60 L 15 60 L 7.5 70 L 0 60 L 5 60 L 5 5").attr('fill', '#777').attr('fill-opacity', .7);
+    legend.append('text').text('Spielerbewertung').attr('transform', 'translate(0, 80)');
     return {
       sanitizeData: function(data) {
         var grade, index, player, sanitizedData;
@@ -68,7 +73,7 @@
             } else {
               return d.grade;
             }
-          }), 6.1
+          }), 6.2
         ]);
         return color.domain([1, 2, 3, 4, 5, 6]);
       },
@@ -108,7 +113,7 @@
         }).attr('r', this.getRadius()).attr('clip-path', 'url(#clip)').on('mouseover', this.circleMouseover).on('mouseout', this.circleMouseout);
         circles.exit().remove();
         xContext.domain(x.domain());
-        yContext.domain(y.domain());
+        yContext.domain([1, 6]);
         context.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + heightContext + ')').call(xAxisContext);
         contextBars = context.selectAll('rect').data(sanitizedData);
         contextBars.enter().append('rect').attr('x', function(d) {
@@ -123,6 +128,8 @@
           } else {
             return 0;
           }
+        }).attr('fill', function(d) {
+          return color(d.grade);
         }).attr('width', 2);
         contextBars.exit().remove();
         brushCallback = $.proxy(this.contextBrush, this);
@@ -158,7 +165,7 @@
         return this.redrawFocusChart();
       },
       circleMouseover: function(d) {
-        var path, text;
+        var path, text, tooltipY;
         d3.select(this).transition().duration(100).attr('r', 20).transition().duration(100).attr('r', 15);
         if (d.grade > d.averageGrade) {
           if (y(d.averageGrade) - y(d.grade) > 15) {
@@ -166,15 +173,17 @@
             d3.select('.focus-svg').append('path').attr('d', path).attr('stroke', 'green');
           }
           text = "Gegner: " + d.opponent + ", <b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Durchschnitt";
+          tooltipY = 45;
         } else {
           if (y(d.grade) - y(d.averageGrade) > 15) {
             path = "M " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) - 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date)) + " " + (y(d.grade) - 15);
             focus.append('path').attr('d', path).attr('stroke', 'red');
           }
           text = "Gegner: " + d.opponent + ", <b>-" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Durchschnitt";
+          tooltipY = 0;
         }
         tooltip.transition().duration(200).style('opacity', .9);
-        return tooltip.html(text).style('left', "" + (x(d.date) + margin.top + 25) + "px").style('top', "" + (y(d.grade) + margin.left + 35) + "px");
+        return tooltip.html(text).style('left', "" + (x(d.date) + margin.left + 5) + "px").style('top', "" + (y(d.grade) + margin.top + marginContext.top + tooltipY) + "px");
       },
       circleMouseout: function(d) {
         d3.select(this).transition().duration(100).attr('r', tageswoche.formcurve.getRadius());

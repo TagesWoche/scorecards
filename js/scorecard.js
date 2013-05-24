@@ -9,7 +9,7 @@
       filter: {},
       data: {},
       init: function(player) {
-        this.player = player;
+        this.player = player.replace("_", ". ");
         return this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
       },
       loadStatistics: function(filter, callback) {

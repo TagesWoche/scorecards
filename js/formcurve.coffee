@@ -6,19 +6,20 @@ tageswoche.formcurve = do ->
 
   # focus chart margins
   margin =
-    top: 10
+    top: 105
     right: 5
-    bottom: 105
+    bottom: 20
     left: 25
   width = 320 - margin.left - margin.right
   height = 380 - margin.top - margin.bottom
 
   # context chart margins
   marginContext =
-    top: 325
+    top: 10
+    bottom: 325
     right: 5
-    bottom: 0
-    left: 5
+    left: 90
+
   heightContext = 380 - marginContext.top - marginContext.bottom
   widthContext = 320 -marginContext.left - marginContext.right
 
@@ -30,7 +31,7 @@ tageswoche.formcurve = do ->
   color = d3.scale.linear().range(['#D7191C', '#D7191C', '#FDAE61', '#FFFFBF', '#A6D96A', '#1A9641'])
 
   # axes
-  xAxisContext = d3.svg.axis().scale(xContext).orient('bottom')
+  xAxisContext = d3.svg.axis().scale(xContext).orient('bottom').ticks(6)
   yAxis = d3.svg.axis().scale(y).orient('left').ticks(6)
   xAxis = d3.svg.axis().scale(x).orient('bottom')
 
@@ -51,12 +52,34 @@ tageswoche.formcurve = do ->
   context = svg_container.append('g')
     .attr('transform', "translate(#{marginContext.left},#{marginContext.top})")
 
+  legend = svg_container.append('g')
+    .attr('class', 'legend')
+
+  legend.append('path')
+    .attr('d', "M 5 5 L 5 10 L 70 10 L 70 15 L 80 7.5 L 70 0 L 70 5 L 5 5")
+    .attr('fill', '#777')
+    .attr('fill-opacity', .7)
+  legend.append('text')
+      .text('Zeitauswahl')
+      .attr('transform', 'translate(20, 25)')
+
+  legend.append('path')
+    .attr('d', "M 5 5 L 10 5 L 10 60 L 15 60 L 7.5 70 L 0 60 L 5 60 L 5 5")
+    .attr('fill', '#777')
+    .attr('fill-opacity', .7)
+
+  legend.append('text')
+    .text('Spielerbewertung')
+    .attr('transform', 'translate(0, 80)')
+
 
   sanitizeData: (data) ->
     sanitizedData = []
     for index, player of data
       grade = +player.grade
-      grade = null if grade == 0
+      if grade == 0
+        grade = null
+      #grade = null if grade == 0
       sanitizedData.push
         date: new Date(player.date)
         grade: grade
@@ -77,7 +100,7 @@ tageswoche.formcurve = do ->
         d.averageGrade
       else
         d.grade
-    ), 6.1])
+    ), 6.2]) # a little above 6 should be visible for radii
     color.domain([1,2,3,4,5,6])
 
 
@@ -151,7 +174,8 @@ tageswoche.formcurve = do ->
 
     # context chart
     xContext.domain(x.domain())
-    yContext.domain(y.domain())
+    #yContext.domain(y.domain())
+    yContext.domain([1,6]) # the y domain should always go over the whole height
 
     context.append('g')
       .attr('class', 'x axis')
@@ -175,6 +199,9 @@ tageswoche.formcurve = do ->
             h
           else
             0
+        )
+        .attr('fill', (d) ->
+          color(d.grade)
         )
         .attr('width', 2)
 
@@ -240,6 +267,7 @@ tageswoche.formcurve = do ->
             .attr('d', path)
             .attr('stroke', 'green')
       text = "Gegner: #{d.opponent}, <b>+#{Math.floor((d.grade - d.averageGrade)*10) / 10}</b> gegenüber Durchschnitt"
+      tooltipY = 45
     else
       if y(d.grade) - y(d.averageGrade) > 15
         path = "M #{x(d.date)} #{y(d.averageGrade)} L #{x(d.date)} #{y(d.grade) - 15} L #{x(d.date) + 5} #{y(d.grade) - 23} L #{x(d.date) - 5} #{y(d.grade) - 23} L #{x(d.date)} #{y(d.grade) - 15}"
@@ -247,13 +275,13 @@ tageswoche.formcurve = do ->
           .attr('d', path)
           .attr('stroke', 'red')
       text = "Gegner: #{d.opponent}, <b>-#{Math.floor((d.averageGrade - d.grade)*10) / 10}</b> gegenüber Durchschnitt"
-
+      tooltipY = 0
     # set tooltip
     tooltip.transition().duration(200)
       .style('opacity', .9)
     tooltip.html(text)
-      .style('left', "#{x(d.date) + margin.top + 25}px")
-      .style('top', "#{y(d.grade) + margin.left + 35}px")
+      .style('left', "#{x(d.date) + margin.left + 5}px")
+      .style('top', "#{y(d.grade) + margin.top + marginContext.top + tooltipY}px")
 
 
   circleMouseout: (d) ->

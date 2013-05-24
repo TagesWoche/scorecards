@@ -7,7 +7,8 @@ tageswoche.scorecard = do ->
   data: {}
 
 
-  init: (@player) ->
+  init: (player) ->
+    @player = player.replace("_", ". ")
     @loadStatistics(@filter, $.proxy(@redrawCard, @))
 
 
