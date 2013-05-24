@@ -35,9 +35,8 @@
     tooltip = d3.select('.curve').append('div').attr('class', 'tooltip').style('opacity', 0);
     context = svg_container.append('g').attr('transform', "translate(" + marginContext.left + "," + marginContext.top + ")");
     legend = svg_container.append('g').attr('class', 'legend');
-    legend.append('path').attr('d', "M 5 5 L 5 10 L 70 10 L 70 15 L 80 7.5 L 70 0 L 70 5 L 5 5").attr('fill', '#777').attr('fill-opacity', .7);
-    legend.append('text').text('Zeitauswahl').attr('transform', 'translate(20, 25)');
-    legend.append('path').attr('d', "M 5 5 L 10 5 L 10 60 L 15 60 L 7.5 70 L 0 60 L 5 60 L 5 5").attr('fill', '#777').attr('fill-opacity', .7);
+    legend.append('path').attr('d', "M 5 25 L 5 30 L 70 30 L 70 35 L 80 27.5 L 70 20 L 70 25 L 5 25").attr('fill', '#777').attr('fill-opacity', .7);
+    legend.append('text').text('Zeitauswahl').attr('transform', 'translate(5, 15)');
     legend.append('text').text('Spielerbewertung').attr('transform', 'translate(0, 80)');
     return {
       sanitizeData: function(data) {
