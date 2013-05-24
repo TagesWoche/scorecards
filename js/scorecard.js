@@ -12,6 +12,16 @@
         this.player = player.replace("_", ". ");
         return this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
       },
+      getPlayerFromUrl: function() {
+        return this.getUrlParameter("spieler");
+      },
+      getUrlParameter: function(name) {
+        var value, _ref;
+        value = (_ref = RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)) != null ? _ref[1] : void 0;
+        if (value) {
+          return decodeURI(value);
+        }
+      },
       loadStatistics: function(filter, callback) {
         var filterString,
           _this = this;

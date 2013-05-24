@@ -12,6 +12,15 @@ tageswoche.scorecard = do ->
     @loadStatistics(@filter, $.proxy(@redrawCard, @))
 
 
+  getPlayerFromUrl: () ->
+    @getUrlParameter("spieler")
+
+
+  getUrlParameter: (name) ->
+    value = RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)?[1]
+    decodeURI(value) if value
+
+
   # NOTE: when loaded on same page as player table, don't use
   loadStatistics: (filter, callback) ->
     filterString = ""

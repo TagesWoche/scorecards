@@ -40,7 +40,8 @@
   <script src="js/scorecard.js"></script>
   <script>
     $(document).ready(function() {
-      player = "Salah"
+      var player = tageswoche.scorecard.getPlayerFromUrl() || "Salah";
+
       $("#player-image").attr("src", "img/" + player + ".jpg")
       tageswoche.scorecard.init(player);
     });
