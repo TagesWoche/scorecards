@@ -7,6 +7,96 @@ body {
   width: 320px;
 }
 
+.profile {
+  float: left;
+  width: 120px;
+}
+
+.profile img {
+  width: 100%;
+}
+
+.saison-values {
+  float: left;
+  margin: 0 10px;
+  width: 180px;
+}
+
+.saison-values h2 {
+  font-size: 20px;
+  margin: 0 0 0.2em;
+}
+
+/* Stats */
+
+.stats {
+  float: left;
+  font-size: 14px;
+  width: 60px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.stats span {
+  font-size: 20px;
+  /*font-weight: bold;*/
+  display: block;
+}
+
+.stats-big {
+  font-size: 14px;
+}
+
+.stats-big span {
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.card.first-card {
+  margin-left: 15px;
+}
+
+.card {
+  float: left;
+  color: #333;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: #FEE318;
+  border-radius: 7px;
+  width: 26px;
+  height: 39px;
+  text-align: center;
+  margin: 0 2px 10px 2px;
+}
+
+.card span {
+  display: inline-block;
+  padding-top: 12px;
+  font-size: 16px;
+}
+
+.card.card-yellow-red {
+  width: 33px;
+}
+
+.card.card-yellow-red div {
+  margin-left: 7px;
+  border-radius: 7px;
+  width: 26px;
+  height: 39px;
+}
+
+.card-red,
+.card.card-red {
+  color: #ffffff;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #FF2207;
+}
+
+.clear {
+  clear: both;
+}
+
+
 /* Tooltip */
 
 div.tooltip {
@@ -39,10 +129,22 @@ div.tooltip {
 }
 
 .curve {
+  padding-top: 1px;
   width: 320px;
-  overflow: hidden;
-  position: relative;
+  /*float: left;*/
+  clear: both;
 }
+
+.curve h3 {
+/*  font-weight: normal;
+  margin: 0 0 0.2em;*/
+  font-size: 16px;
+
+  font-weight: bold;
+  margin: 0.5em 0 0.5em;
+}
+
+
 
 .curve-svg circle {
   stroke: #000;
@@ -69,4 +171,23 @@ div.tooltip {
   fill-opacity: .125;
   shape-rendering: crispEdges;
   fill: #CC0000;
+}
+
+@media (max-width: 640px) {
+
+  .curve {
+    clear: both;
+    width: 320px;
+    float: none;
+  }
+
+  .curve h3 {
+    font-weight: bold;
+    margin: 0.5em 0 0.5em;
+  }
+
+  .scorecard {
+    width: 320px;
+  }
+
 }

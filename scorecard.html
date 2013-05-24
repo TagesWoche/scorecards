@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width; initial-scale=1;">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/scorecard.css" />
 
     <script src="js/vendor/d3.v3.js"></script>
@@ -12,16 +12,23 @@
     <div class="scorecard">
       <div class="profile">
         <img id="player-image" />
-        <h2 id="player-name"></h2>
       </div>
       <div class="saison-values">
-        <div id="minutes-played">Minuten: <span></span></div>
-        <div id="games-played">Spiele: <span></span></div>
-        <div id="goals">Tore: <span></span></div>
-        <div id="assists">Assists: <span></span></div>
-        <div id="yellow-cards">Gelbe: <span></span></div>
-        <div id="yellow-red-cards">Gelb-Rote: <span></span></div>
-        <div id="red-cards">Rote: <span></span></div>
+        <h2 id="player-name"></h2>
+
+        <div class="stats stats-big" id="games-played"><span>-</span> Spiele</div>
+        <div class="stats stats-big" id="goals"><span>-</span> Tore</div>
+        <div class="stats stats-big" id="assists"><span>-</span> Assists</div>
+
+        <br class="clear">
+
+        <div class="stats" id="minutes-played"><span>-</span> Minuten</div>
+        <div class="card first-card" id="yellow-cards"><span></span></div>
+        <div class="card card-yellow-red" id="yellow-red-cards">
+          <div class="card-red"><span></span></div>
+        </div>
+        <div class="card card-red" id="red-cards"><span></span></div>
+
       </div>
       <div class="curve">
         <h3>Spielerbewertung</h3>
