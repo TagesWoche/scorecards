@@ -275,13 +275,13 @@ tageswoche.formcurve = do ->
           .attr('d', path)
           .attr('stroke', 'red')
       text = "Gegner: #{d.opponent}, <b>-#{Math.floor((d.averageGrade - d.grade)*10) / 10}</b> gegenüber Durchschnitt"
-      tooltipY = 0
+      tooltipY = -20
     # set tooltip
     tooltip.transition().duration(200)
       .style('opacity', .9)
     tooltip.html(text)
-      .style('left', "#{x(d.date) + margin.left + 5}px")
-      .style('top', "#{y(d.grade) + margin.top + marginContext.top + tooltipY}px")
+      .style('left', "#{x(d.date) + margin.left + 15}px")
+      .style('top', "#{y(d.grade) + height + tooltipY}px")
 
 
   circleMouseout: (d) ->
