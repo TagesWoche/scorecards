@@ -83,11 +83,12 @@ tageswoche.formcurve = do ->
       if grade == 0
         grade = null
       #grade = null if grade == 0
-      sanitizedData.push
-        date: new Date(player.date)
-        grade: grade
-        averageGrade: +player.gameAverageGrade
-        opponent: player.opponent
+      if player.date
+        sanitizedData.push
+          date: new Date(player.date)
+          grade: grade
+          averageGrade: +player.gameAverageGrade
+          opponent: player.opponent
     sanitizedData
 
 

@@ -50,12 +50,14 @@
           if (grade === 0) {
             grade = null;
           }
-          sanitizedData.push({
-            date: new Date(player.date),
-            grade: grade,
-            averageGrade: +player.gameAverageGrade,
-            opponent: player.opponent
-          });
+          if (player.date) {
+            sanitizedData.push({
+              date: new Date(player.date),
+              grade: grade,
+              averageGrade: +player.gameAverageGrade,
+              opponent: player.opponent
+            });
+          }
         }
         return sanitizedData;
       },
