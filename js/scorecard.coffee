@@ -10,6 +10,13 @@ tageswoche.scorecard = do ->
   init: (player) ->
     @player = player.replace("_", ". ")
     @loadStatistics(@filter, $.proxy(@redrawCard, @))
+    # events
+    $("#competition-filter").on "change", (event) =>
+      console.log "filter changed"
+      $this = $(event.currentTarget)
+      @filter ?= {}
+      @filter.competition = $this.val()
+      @loadStatistics(@filter, $.proxy(@redrawCard, @))
 
 
   getPlayerFromUrl: () ->
@@ -52,5 +59,6 @@ tageswoche.scorecard = do ->
         $('#yellow-cards span').html(value.yellowCards)
         $('#yellow-red-cards span').html(value.yellowRedCards)
         $('#red-cards span').html(value.redCards)
+        $('#average-grade span').html(Math.floor(value.averageGrade*10)/10)
         tageswoche.formcurve.draw(value.grades)
         return

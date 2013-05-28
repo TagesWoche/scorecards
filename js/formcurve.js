@@ -4,15 +4,17 @@
   this.tageswoche = this.tageswoche || {};
 
   tageswoche.formcurve = (function() {
-    var brush, color, context, focus, height, heightContext, legend, margin, marginContext, svg_container, tooltip, width, widthContext, x, xAxis, xAxisContext, xContext, y, yAxis, yContext;
+    var brush, color, containerWidth, context, focus, height, heightContext, initialized, legend, margin, marginContext, svg_container, tooltip, width, widthContext, x, xAxis, xAxisContext, xContext, y, yAxis, yContext;
+    initialized = false;
     brush = void 0;
+    containerWidth = $('.curve').width();
     margin = {
       top: 105,
       right: 5,
       bottom: 20,
       left: 25
     };
-    width = 320 - margin.left - margin.right;
+    width = containerWidth - margin.left - margin.right;
     height = 380 - margin.top - margin.bottom;
     marginContext = {
       top: 10,
@@ -21,7 +23,7 @@
       left: 90
     };
     heightContext = 380 - marginContext.top - marginContext.bottom;
-    widthContext = 320 - marginContext.left - marginContext.right;
+    widthContext = containerWidth - marginContext.left - marginContext.right;
     x = d3.time.scale().range([0, width]);
     xContext = d3.time.scale().range([0, widthContext]);
     y = d3.scale.linear().range([height, 0]);
@@ -58,22 +60,10 @@
         return sanitizedData;
       },
       setupDomains: function(sanitizedData) {
-        x.domain([
-          d3.max(sanitizedData, function(d) {
-            return d.date;
-          }), d3.min(sanitizedData, function(d) {
-            return d.date;
-          })
-        ]);
-        y.domain([
-          d3.min(sanitizedData, function(d) {
-            if (d.averageGrade < d.grade) {
-              return d.averageGrade;
-            } else {
-              return d.grade;
-            }
-          }), 6.2
-        ]);
+        x.domain(d3.extent(sanitizedData.map(function(d) {
+          return d.date;
+        })));
+        y.domain([0.8, 6.2]);
         return color.domain([1, 2, 3, 4, 5, 6]);
       },
       redrawFocusChart: function() {
@@ -92,7 +82,7 @@
         return circles;
       },
       draw: function(data) {
-        var brushCallback, circles, contextBars, sanitizedData;
+        var brushCallback, circles, contextBars, sanitizedData, today, twoMonthsAgo;
         sanitizedData = this.sanitizeData(data);
         svg_container.append('defs').append('clipPath').attr('id', 'clip').append('rect').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
         this.setupDomains(sanitizedData);
@@ -112,7 +102,7 @@
         }).attr('r', this.getRadius()).attr('clip-path', 'url(#clip)').on('mouseover', this.circleMouseover).on('mouseout', this.circleMouseout);
         circles.exit().remove();
         xContext.domain(x.domain());
-        yContext.domain([1, 6]);
+        yContext.domain(y.domain());
         context.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + heightContext + ')').call(xAxisContext);
         contextBars = context.selectAll('rect').data(sanitizedData);
         contextBars.enter().append('rect').attr('x', function(d) {
@@ -133,9 +123,13 @@
         contextBars.exit().remove();
         brushCallback = $.proxy(this.contextBrush, this);
         brush = d3.svg.brush().x(xContext).on('brush', brushCallback);
-        brush.extent([sanitizedData[sanitizedData.length - 15].date, sanitizedData[sanitizedData.length - 1].date]);
+        today = new Date();
+        twoMonthsAgo = new Date();
+        twoMonthsAgo.setDate(twoMonthsAgo.getDate() - 60);
+        brush.extent([twoMonthsAgo, today]);
         context.append('g').attr('class', 'x brush').call(brush).selectAll('rect').attr('y', -6).attr('height', heightContext + 7);
-        return context.select('.brush').call(brushCallback);
+        context.select('.brush').call(brushCallback);
+        return initialized = true;
       },
       getRadius: function() {
         var dayDiff, millisecondsPerDay, size;
@@ -158,7 +152,7 @@
         if (brush.empty()) {
           x.domain(xContext.domain());
         } else {
-          x.domain([selection[1], selection[0]]);
+          x.domain(selection);
         }
         focus.select(".x.axis").call(xAxis);
         return this.redrawFocusChart();
@@ -171,18 +165,18 @@
             path = "M  " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) + 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) + 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) + 23) + " L " + (x(d.date)) + " " + (y(d.grade) + 15);
             d3.select('.focus-svg').append('path').attr('d', path).attr('stroke', 'green');
           }
-          text = "Gegner: " + d.opponent + ", <b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Durchschnitt";
-          tooltipY = 45;
+          text = "Note: " + d.grade + " &ndash;<br/>\nGegner: " + d.opponent + " &ndash;<br/>\n<b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
+          tooltipY = 30;
         } else {
           if (y(d.grade) - y(d.averageGrade) > 15) {
             path = "M " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) - 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date)) + " " + (y(d.grade) - 15);
             focus.append('path').attr('d', path).attr('stroke', 'red');
           }
-          text = "Gegner: " + d.opponent + ", <b>-" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Durchschnitt";
-          tooltipY = -20;
+          text = "Note: " + d.grade + " &ndash;<br/>\nGegner: " + d.opponent + " &ndash;<br/>\n<b>-" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
+          tooltipY = -30;
         }
         tooltip.transition().duration(200).style('opacity', .9);
-        return tooltip.html(text).style('left', "" + (x(d.date) + margin.left + 15) + "px").style('top', "" + (y(d.grade) + height + tooltipY) + "px");
+        return tooltip.html(text).style('left', "" + (x(d.date) + margin.left + 15) + "px").style('top', "" + (y(d.grade) + margin.top + tooltipY) + "px");
       },
       circleMouseout: function(d) {
         d3.select(this).transition().duration(100).attr('r', tageswoche.formcurve.getRadius());

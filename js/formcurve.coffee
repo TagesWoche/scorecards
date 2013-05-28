@@ -2,7 +2,10 @@
 
 tageswoche.formcurve = do ->
 
+  initialized = false
   brush = undefined
+
+  containerWidth = $('.curve').width()
 
   # focus chart margins
   margin =
@@ -10,7 +13,7 @@ tageswoche.formcurve = do ->
     right: 5
     bottom: 20
     left: 25
-  width = 320 - margin.left - margin.right
+  width = containerWidth - margin.left - margin.right
   height = 380 - margin.top - margin.bottom
 
   # context chart margins
@@ -21,7 +24,7 @@ tageswoche.formcurve = do ->
     left: 90
 
   heightContext = 380 - marginContext.top - marginContext.bottom
-  widthContext = 320 -marginContext.left - marginContext.right
+  widthContext = containerWidth - marginContext.left - marginContext.right
 
   # scales
   x = d3.time.scale().range([0, width])
@@ -89,18 +92,15 @@ tageswoche.formcurve = do ->
 
 
   setupDomains: (sanitizedData) ->
-    x.domain([d3.max(sanitizedData, (d) ->
+    # x.domain([d3.max(sanitizedData, (d) ->
+    #   d.date
+    # ), d3.min(sanitizedData, (d) ->
+    #   d.date
+    # )])
+    x.domain(d3.extent(sanitizedData.map( (d) ->
       d.date
-    ), d3.min(sanitizedData, (d) ->
-      d.date
-    )])
-
-    y.domain([d3.min(sanitizedData, (d) ->
-      if d.averageGrade < d.grade
-        d.averageGrade
-      else
-        d.grade
-    ), 6.2]) # a little above 6 should be visible for radii
+    )))
+    y.domain([0.8, 6.2]) # a little above 6 should be visible for radii
     color.domain([1,2,3,4,5,6])
 
 
@@ -174,8 +174,7 @@ tageswoche.formcurve = do ->
 
     # context chart
     xContext.domain(x.domain())
-    #yContext.domain(y.domain())
-    yContext.domain([1,6]) # the y domain should always go over the whole height
+    yContext.domain(y.domain())
 
     context.append('g')
       .attr('class', 'x axis')
@@ -214,8 +213,12 @@ tageswoche.formcurve = do ->
       .x(xContext)
       .on('brush', brushCallback)
 
-    brush.extent([sanitizedData[sanitizedData.length - 15].date,
-                  sanitizedData[sanitizedData.length - 1].date])
+    today = new Date()
+    twoMonthsAgo = new Date()
+    twoMonthsAgo.setDate( (twoMonthsAgo.getDate() - 60) )
+    brush.extent([twoMonthsAgo, today])
+    # brush.extent([sanitizedData[sanitizedData.length - 15].date,
+    #             sanitizedData[sanitizedData.length - 1].date])
 
     context.append('g')
       .attr('class', 'x brush')
@@ -225,7 +228,7 @@ tageswoche.formcurve = do ->
         .attr('height', heightContext + 7)
 
     context.select('.brush').call(brushCallback)
-
+    initialized = true
 
   getRadius: () ->
     millisecondsPerDay = 1000 * 60 * 60 * 24
@@ -245,7 +248,7 @@ tageswoche.formcurve = do ->
     if brush.empty()
       x.domain(xContext.domain())
     else
-      x.domain([selection[1], selection[0]])
+      x.domain(selection)
 
     focus.select(".x.axis").call(xAxis)
     @redrawFocusChart()
@@ -258,6 +261,7 @@ tageswoche.formcurve = do ->
       .transition().duration(100)
       .attr('r', 15)
 
+
     if d.grade > d.averageGrade
       # only draw an arrow line if its longer than the radius
       if y(d.averageGrade) - y(d.grade) > 15
@@ -266,22 +270,33 @@ tageswoche.formcurve = do ->
           .append('path')
             .attr('d', path)
             .attr('stroke', 'green')
-      text = "Gegner: #{d.opponent}, <b>+#{Math.floor((d.grade - d.averageGrade)*10) / 10}</b> gegenüber Durchschnitt"
-      tooltipY = 45
+      text = """
+        Note: #{d.grade} &ndash;<br/>
+        Gegner: #{d.opponent} &ndash;<br/>
+        <b>+#{Math.floor((d.grade - d.averageGrade)*10) / 10}</b> gegenüber Team-Schnitt
+        """
+      tooltipY = 30
     else
       if y(d.grade) - y(d.averageGrade) > 15
         path = "M #{x(d.date)} #{y(d.averageGrade)} L #{x(d.date)} #{y(d.grade) - 15} L #{x(d.date) + 5} #{y(d.grade) - 23} L #{x(d.date) - 5} #{y(d.grade) - 23} L #{x(d.date)} #{y(d.grade) - 15}"
         focus.append('path')
           .attr('d', path)
           .attr('stroke', 'red')
-      text = "Gegner: #{d.opponent}, <b>-#{Math.floor((d.averageGrade - d.grade)*10) / 10}</b> gegenüber Durchschnitt"
-      tooltipY = -20
+      text =
+        """
+        Note: #{d.grade} &ndash;<br/>
+        Gegner: #{d.opponent} &ndash;<br/>
+        <b>-#{Math.floor((d.averageGrade - d.grade)*10) / 10}</b> gegenüber Team-Schnitt
+        """
+      tooltipY = -30
     # set tooltip
     tooltip.transition().duration(200)
       .style('opacity', .9)
     tooltip.html(text)
       .style('left', "#{x(d.date) + margin.left + 15}px")
-      .style('top', "#{y(d.grade) + height + tooltipY}px")
+      .style('top', "#{y(d.grade) + margin.top + tooltipY}px")
+      # .style('left', "#{x(d.date) + margin.left + 15}px")
+      # .style('top', "#{y(d.grade) + height + tooltipY}px")
 
 
   circleMouseout: (d) ->

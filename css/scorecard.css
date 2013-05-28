@@ -3,13 +3,15 @@ body {
   font-weight: 100;
 }
 
-.scorecard {
-  width: 320px;
+.player-profile {
+  float: left;
+  width: 200px;
+  margin-right: 40px;
 }
 
 .profile {
-  float: left;
-  width: 120px;
+  width: 100%;
+  margin: 10px;
 }
 
 .profile img {
@@ -17,7 +19,6 @@ body {
 }
 
 .saison-values {
-  float: left;
   margin: 0 10px;
   width: 180px;
 }
@@ -25,6 +26,7 @@ body {
 .saison-values h2 {
   font-size: 20px;
   margin: 0 0 0.2em;
+  text-align: center;
 }
 
 /* Stats */
@@ -96,14 +98,13 @@ body {
   clear: both;
 }
 
-
 /* Tooltip */
 
 div.tooltip {
   position: absolute;
-  text-align: center;
+  text-align: left;
   width: 80px;
-  padding: 2px;
+  padding: 2px 2px 2px 7px;
   font: 12px sans-serif;
   background: #004093;/*lightsteelblue;*/
   color: #fff;
@@ -130,9 +131,9 @@ div.tooltip {
 
 .curve {
   padding-top: 1px;
-  width: 320px;
-  /*float: left;*/
-  clear: both;
+  float: left;
+  min-width: 400px;
+  position: relative;
 }
 
 .curve h3 {
@@ -143,8 +144,6 @@ div.tooltip {
   font-weight: bold;
   margin: 0.5em 0 0.5em;
 }
-
-
 
 .curve-svg circle {
   stroke: #000;
@@ -175,10 +174,34 @@ div.tooltip {
 
 @media (max-width: 640px) {
 
-  .curve {
+  .profile {
+    width: 120px;
+    float: left;
+    margin: 0;
+  }
+
+  .saison-values {
+    float: left;
+    margin-right: 0px;
+  }
+
+  .saison-values h2 {
+    text-align: left;
+  }
+
+  .player-profile {
+    float: none;
     clear: both;
     width: 320px;
+    margin: 0;
+  }
+
+  .curve {
+    clear: both;
+    min-width: 320px;
+    width: 320px;
     float: none;
+
   }
 
   .curve h3 {
@@ -189,5 +212,4 @@ div.tooltip {
   .scorecard {
     width: 320px;
   }
-
 }

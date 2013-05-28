@@ -9,8 +9,19 @@
       filter: {},
       data: {},
       init: function(player) {
+        var _this = this;
         this.player = player.replace("_", ". ");
-        return this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
+        this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
+        return $("#competition-filter").on("change", function(event) {
+          var $this, _ref;
+          console.log("filter changed");
+          $this = $(event.currentTarget);
+          if ((_ref = _this.filter) == null) {
+            _this.filter = {};
+          }
+          _this.filter.competition = $this.val();
+          return _this.loadStatistics(_this.filter, $.proxy(_this.redrawCard, _this));
+        });
       },
       getPlayerFromUrl: function() {
         return this.getUrlParameter("spieler");
@@ -61,6 +72,7 @@
             $('#yellow-cards span').html(value.yellowCards);
             $('#yellow-red-cards span').html(value.yellowRedCards);
             $('#red-cards span').html(value.redCards);
+            $('#average-grade span').html(Math.floor(value.averageGrade * 10) / 10);
             tageswoche.formcurve.draw(value.grades);
             return;
           }

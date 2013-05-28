@@ -10,28 +10,39 @@
   </head>
   <body>
     <div class="scorecard">
-      <div class="profile">
-        <img id="player-image" />
-      </div>
-      <div class="saison-values">
-        <h2 id="player-name"></h2>
-
-        <div class="stats stats-big" id="games-played"><span>-</span> Spiele</div>
-        <div class="stats stats-big" id="goals"><span>-</span> Tore</div>
-        <div class="stats stats-big" id="assists"><span>-</span> Assists</div>
-
-        <br class="clear">
-
-        <div class="stats" id="minutes-played"><span>-</span> Minuten</div>
-        <div class="card first-card" id="yellow-cards"><span></span></div>
-        <div class="card card-yellow-red" id="yellow-red-cards">
-          <div class="card-red"><span></span></div>
+      <div class="player-profile">
+        <div class="profile">
+          <img id="player-image" />
         </div>
-        <div class="card card-red" id="red-cards"><span></span></div>
+        <div class="saison-values">
+          <h2 id="player-name"></h2>
+<!--           <form>
+            <span>Filter:</span>
+            <select name="competition" id="competition-filter">
+              <option value="">Alle Wettbewerbe</option>
+              <option value="m">Meisterschaft</option>
+              <option value="c">Cup</option>
+              <option value="euro">International</option>
+            </select>
+          </form>
+ -->
+          <div class="stats stats-big" id="games-played"><span>-</span> Spiele</div>
+          <div class="stats stats-big" id="goals"><span>-</span> Tore</div>
+          <div class="stats stats-big" id="assists"><span>-</span> Assists</div>
 
+          <br class="clear">
+
+          <div class="stats" id="minutes-played"><span>-</span> Minuten</div>
+          <div class="card first-card" id="yellow-cards"><span></span></div>
+          <div class="card card-yellow-red" id="yellow-red-cards">
+            <div class="card-red"><span></span></div>
+          </div>
+          <div class="card card-red" id="red-cards"><span></span></div>
+
+        </div>
       </div>
       <div class="curve">
-        <h3>Spielerbewertung</h3>
+        <h3 id="average-grade">Alle Spielnoten (Saions-&Oslash;: <span></span>)</h3>
       </div>
     </div>
   </body>
