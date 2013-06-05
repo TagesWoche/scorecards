@@ -39,7 +39,7 @@
     legend = svg_container.append('g').attr('class', 'legend');
     legend.append('path').attr('d', "M 5 25 L 5 30 L 70 30 L 70 35 L 80 27.5 L 70 20 L 70 25 L 5 25").attr('fill', '#777').attr('fill-opacity', .7);
     legend.append('text').text('Zeitauswahl').attr('transform', 'translate(5, 15)');
-    legend.append('text').text('Note').attr('transform', 'translate(0, 80)');
+    legend.append('text').text('Spielerbewertung').attr('transform', 'translate(0, 80)');
     return {
       sanitizeData: function(data) {
         var grade, index, player, sanitizedData;
@@ -167,14 +167,14 @@
             path = "M  " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) + 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) + 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) + 23) + " L " + (x(d.date)) + " " + (y(d.grade) + 15);
             d3.select('.focus-svg').append('path').attr('d', path).attr('stroke', 'green');
           }
-          text = "Gegner: " + d.opponent + "<br/> Note: " + d.grade + ", \n\n<b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
+          text = "Note: " + d.grade + " &ndash;<br/>\nGegner: " + d.opponent + " &ndash;<br/>\n<b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
           tooltipY = 30;
         } else {
           if (y(d.grade) - y(d.averageGrade) > 15) {
             path = "M " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) - 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date)) + " " + (y(d.grade) - 15);
             focus.append('path').attr('d', path).attr('stroke', 'red');
           }
-          text = "Gegner: " + d.opponent + "<br/> Note: " + d.grade + ", \n\n<b>-" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
+          text = "Note: " + d.grade + " &ndash;<br/>\nGegner: " + d.opponent + " &ndash;<br/>\n<b>-" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
           tooltipY = -30;
         }
         tooltip.transition().duration(200).style('opacity', .9);
