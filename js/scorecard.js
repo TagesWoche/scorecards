@@ -14,7 +14,6 @@
         this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
         return $("#competition-filter").on("change", function(event) {
           var $this, _ref;
-          console.log("filter changed");
           $this = $(event.currentTarget);
           if ((_ref = _this.filter) == null) {
             _this.filter = {};
@@ -53,7 +52,6 @@
             url: "http://tageswoche.herokuapp.com/fcb/statistics?" + filterString,
             dataType: "jsonp"
           }).done(function(data) {
-            console.log(data);
             _this.statistics[filterString] = data;
             return callback(data);
           });
@@ -64,7 +62,6 @@
         _ref = data.list;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           value = _ref[_i];
-          console.log(value);
           if (value.nickname === this.player) {
             $('#player-name').html(value.name);
             $('#minutes-played span').html(value.minutes);

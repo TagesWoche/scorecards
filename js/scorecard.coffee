@@ -12,7 +12,7 @@ tageswoche.scorecard = do ->
     @loadStatistics(@filter, $.proxy(@redrawCard, @))
     # events
     $("#competition-filter").on "change", (event) =>
-      console.log "filter changed"
+      # console.log "filter changed"
       $this = $(event.currentTarget)
       @filter ?= {}
       @filter.competition = $this.val()
@@ -43,7 +43,7 @@ tageswoche.scorecard = do ->
         url: "http://tageswoche.herokuapp.com/fcb/statistics?#{filterString}",
         dataType: "jsonp"
       ).done ( data ) =>
-        console.log data
+        # console.log data
         @statistics[filterString] = data
         callback(data)
       return
@@ -51,7 +51,7 @@ tageswoche.scorecard = do ->
 
   redrawCard: (data) ->
     for value in data.list
-      console.log value
+      # console.log value
       if value.nickname == @player
         $('#player-name').html(value.name)
         $('#minutes-played span').html(value.minutes)
