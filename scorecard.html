@@ -53,7 +53,7 @@
     $(document).ready(function() {
       var player = tageswoche.scorecard.getPlayerFromUrl() || "Salah";
 
-      $("#player-image").attr("src", "img/" + player + ".jpg")
+      $("#player-image").attr("src", "img/" + player.replace("ö", "oe").replace("ä", "ae").replace("ü", "ue") + ".jpg")
       tageswoche.scorecard.init(player);
     });
   </script>
