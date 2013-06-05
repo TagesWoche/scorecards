@@ -167,14 +167,14 @@
             path = "M  " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) + 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) + 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) + 23) + " L " + (x(d.date)) + " " + (y(d.grade) + 15);
             d3.select('.focus-svg').append('path').attr('d', path).attr('stroke', 'green');
           }
-          text = "Note: " + d.grade + " &ndash;<br/>\nGegner: " + d.opponent + " &ndash;<br/>\n<b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
+          text = "Gegner: " + d.opponent + "<br/> Note: " + d.grade + ", \n\n<b>+" + (Math.floor((d.grade - d.averageGrade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
           tooltipY = 30;
         } else {
           if (y(d.grade) - y(d.averageGrade) > 15) {
             path = "M " + (x(d.date)) + " " + (y(d.averageGrade)) + " L " + (x(d.date)) + " " + (y(d.grade) - 15) + " L " + (x(d.date) + 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date) - 5) + " " + (y(d.grade) - 23) + " L " + (x(d.date)) + " " + (y(d.grade) - 15);
             focus.append('path').attr('d', path).attr('stroke', 'red');
           }
-          text = "Note: " + d.grade + " &ndash;<br/>\nGegner: " + d.opponent + " &ndash;<br/>\n<b>-" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
+          text = "Gegner: " + d.opponent + "<br/> Note: " + d.grade + ", \n\n<b>+" + (Math.floor((d.averageGrade - d.grade) * 10) / 10) + "</b> gegenüber Team-Schnitt";
           tooltipY = -30;
         }
         tooltip.transition().duration(200).style('opacity', .9);
