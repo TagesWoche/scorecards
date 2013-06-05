@@ -7,6 +7,8 @@ body {
   background-color: rgba(0,128,0,0.05);
 }
 
+h4 {font-weight: normal;margin-top: -5px;}
+
 #player-image {
 	border-radius: 5px !important;
 }
@@ -15,6 +17,7 @@ body {
   float: left;
   width: 200px;
   margin-right: 40px;
+  margin-top: 40px;
 }
 
 .profile {
@@ -121,7 +124,7 @@ div.tooltip {
   pointer-events: none;
 }
 
-.focus-svg {
+focus-svg {
   position: relative;
 }
 
@@ -130,6 +133,8 @@ div.tooltip {
 .legend text {
   font-size: 10px;
 }
+
+.credit {font-size: 11px;text-align: right;margin-right:14px;}
 
 /* Curve */
 
@@ -142,6 +147,7 @@ div.tooltip {
   float: left;
   min-width: 400px;
   position: relative;
+  margin-top: 40px;
 }
 
 .curve h3 {
@@ -182,8 +188,9 @@ div.tooltip {
 
 @media (max-width: 639px) {
 
-body {padding:4px;}
+  body {padding:4px;}
 
+  .mobile-hide {display:none;}
   .profile {
     width: 120px;
     float: left;
