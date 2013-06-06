@@ -61,6 +61,6 @@ tageswoche.scorecard = do ->
         $('#yellow-cards span').html(value.yellowCards)
         $('#yellow-red-cards span').html(value.yellowRedCards)
         $('#red-cards span').html(value.redCards)
-        $('#average-grade span').html(Math.floor(value.averageGrade*10)/10)
+        $('#average-grade span').html(Math.round(value.averageGrade * 10) / 10)
         tageswoche.formcurve.draw(value.grades)
         return
