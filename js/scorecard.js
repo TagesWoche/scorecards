@@ -62,6 +62,7 @@
         _ref = data.list;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           value = _ref[_i];
+          console.log(value);
           if (value.nickname === this.player) {
             $('#player-name').html(value.name);
             $('#minutes-played span').html(value.minutes);
