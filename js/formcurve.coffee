@@ -214,6 +214,7 @@ tageswoche.formcurve = do ->
       .x(xContext)
       .on('brush', brushCallback)
 
+    # sets the brush by default to: from now - 60 days ago
     today = new Date()
     twoMonthsAgo = new Date()
     twoMonthsAgo.setDate( (twoMonthsAgo.getDate() - 60) )
@@ -276,7 +277,7 @@ tageswoche.formcurve = do ->
         Gegner: #{d.opponent} &ndash;<br/>
         <b>+#{Math.floor((d.grade - d.averageGrade)*10) / 10}</b> gegenüber Team-Schnitt
         """
-      tooltipY = 30
+      tooltipY = 60
     else
       if y(d.grade) - y(d.averageGrade) > 15
         path = "M #{x(d.date)} #{y(d.averageGrade)} L #{x(d.date)} #{y(d.grade) - 15} L #{x(d.date) + 5} #{y(d.grade) - 23} L #{x(d.date) - 5} #{y(d.grade) - 23} L #{x(d.date)} #{y(d.grade) - 15}"

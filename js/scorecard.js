@@ -11,6 +11,8 @@
       init: function(player) {
         var _this = this;
         this.player = player.replace("_", ". ");
+        this.filter.saison = this.getSaisonFromUrl();
+        console.log(this.filter.saison);
         this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
         return $("#competition-filter").on("change", function(event) {
           var $this, _ref;
@@ -21,6 +23,9 @@
           _this.filter.competition = $this.val();
           return _this.loadStatistics(_this.filter, $.proxy(_this.redrawCard, _this));
         });
+      },
+      getSaisonFromUrl: function() {
+        return this.getUrlParameter("saison");
       },
       getPlayerFromUrl: function() {
         return this.getUrlParameter("spieler");
@@ -41,6 +46,9 @@
         }
         if (filter.competition) {
           filterString += "competition=" + filter.competition;
+        }
+        if (filter.saison) {
+          filterString += "saison=" + filter.saison;
         }
         if (filterString === "") {
           filterString = "all";
