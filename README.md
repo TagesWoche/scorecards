@@ -13,3 +13,5 @@ Each scorecard includes the following elements:
 Scorecards currently have two parameters that can be added to the url:
 - player name (required)
 - season (optional)
+
+![Scorecard](https://github.com/TagesWoche/tageswoche-scorecards/blob/master/screenshot.png)
