@@ -14,4 +14,6 @@ Scorecards currently have two parameters that can be added to the url:
 - player name (required)
 - season (optional)
 
+Live example: http://labs.tageswoche.ch/scorecards/scorecard.html?spieler=Sommer
+
 ![Scorecard](https://raw.github.com/TagesWoche/tageswoche-scorecards/master/screenshot.png)
