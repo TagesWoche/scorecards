@@ -12,7 +12,7 @@
         var _this = this;
         this.player = player.replace("_", ". ");
         this.filter.saison = this.getSaisonFromUrl();
-        console.log(this.filter.saison);
+        if (this.filter.saison) {$('.seasonname').html("20" + this.filter.saison)};
         this.loadStatistics(this.filter, $.proxy(this.redrawCard, this));
         return $("#competition-filter").on("change", function(event) {
           var $this, _ref;
@@ -71,6 +71,7 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           value = _ref[_i];
           if (value.nickname === this.player) {
+            console.log(data);
             $('#player-name').html(value.name);
             $('#minutes-played span').html(value.minutes);
             $('#games-played span').html(value.played);
